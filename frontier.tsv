@@ -1,1 +1,2 @@
 slot	tag	commit	val_bpb	memory_gb	params_m	role	parent1	parent2	mutation_kind	description	controller_sha	expansions	mean_child_gain	last_used_exp	last_improved_exp
+0	elite/0	fcc3407	0.996898	44.0	50.3	best	-	-	baseline	unmodified baseline (depth=8, SSSL, Muon+AdamW, 50.3M params)	b233d7b98f69	0	0.000000	exp0001	exp0001

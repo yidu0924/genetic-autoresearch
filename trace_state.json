@@ -1,7 +1,19 @@
 {
-  "history": [],
-  "next_exp": 1,
-  "operator_history": [],
+  "history": [
+    {
+      "exp_id": "exp0001",
+      "mutation_kind": "baseline",
+      "parent1": "-",
+      "parent2": "-",
+      "promoted_slot": "elite/0",
+      "status": "ok",
+      "val_bpb": "0.996898"
+    }
+  ],
+  "next_exp": 2,
+  "operator_history": [
+    "baseline"
+  ],
   "pair_history": {},
   "population_size": 4,
   "run_tag": "apr30-h100long-opus47-trace-selfmod-2"

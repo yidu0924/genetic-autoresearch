@@ -1,1 +1,2 @@
 exp_id	commit	parent1	parent2	val_bpb	memory_gb	params_m	status	mutation_kind	description	controller_sha	promoted_slot
+exp0001	fcc3407	-	-	0.996898	44.0	50.3	elite	baseline	unmodified baseline (depth=8, SSSL, Muon+AdamW, 50.3M params)	b233d7b98f69	elite/0
