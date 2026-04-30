@@ -2,3 +2,4 @@ exp_id	commit	parent1	parent2	val_bpb	memory_gb	params_m	status	mutation_kind	de
 exp0001	fcc3407	-	-	0.996898	44.0	50.3	elite	baseline	unmodified baseline (depth=8, SSSL, Muon+AdamW, 50.3M params)	b233d7b98f69	elite/0
 exp0002	80d458b	fcc3407	-	1.017796	60.5	80.9	elite	mutate	DEPTH 8->9 (model_dim 512->640, params 50.3M->80.9M)	b233d7b98f69	elite/1
 exp0003	66ca8f1	80d458b	-	1.020408	60.5	80.9	elite	mutate	WARMDOWN_RATIO 0.5->0.3 from depth=9 (more time at full LR)	d650fa1fc126	elite/2
+exp0004	64f83ef	66ca8f1	-	1.012976	60.5	80.9	elite	mutate	MATRIX_LR 0.04->0.05 from depth=9+warmdown=0.3	786d99d6529e	elite/3
