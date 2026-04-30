@@ -273,6 +273,21 @@ def select_primary(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> Dic
     return scored[0][1]
 
 
+def _lineage_independent(a: Dict[str, str], b: Dict[str, str]) -> bool:
+    """Two elites are lineage-independent if neither's parent1 commit
+    equals the other's commit. This catches direct parent/child pairs,
+    which carry no information to transplant via crossover."""
+    a_commit = a.get("commit", "")
+    b_commit = b.get("commit", "")
+    a_parent1 = a.get("parent1", "")
+    b_parent1 = b.get("parent1", "")
+    if a_commit and a_commit == b_parent1:
+        return False
+    if b_commit and b_commit == a_parent1:
+        return False
+    return True
+
+
 def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> str:
     if len(frontier) < 2:
         return "mutate"
@@ -282,8 +297,24 @@ def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> st
     # already filters them out. Without this guard, choose_secondary's
     # fallback would pick a baseline elite anyway, producing a degenerate
     # crossover (e.g. primary=mutated child, secondary=its own baseline parent).
-    non_baseline_elites = sum(1 for r in frontier if r.get("mutation_kind") != "baseline")
-    if non_baseline_elites < 2:
+    non_baseline = [r for r in frontier if r.get("mutation_kind") != "baseline"]
+    if len(non_baseline) < 2:
+        return "mutate"
+
+    # Need at least one lineage-independent pair: two non-baseline elites
+    # neither of which is the direct conceptual parent of the other.
+    # Without this, a frontier built up via a single mutation chain
+    # (elite/0 -> elite/1 -> elite/2) produces degenerate crossovers
+    # where the "donor" carries no idea the "base" doesn't already have.
+    has_independent_pair = False
+    for i, a in enumerate(non_baseline):
+        for b in non_baseline[i + 1:]:
+            if _lineage_independent(a, b):
+                has_independent_pair = True
+                break
+        if has_independent_pair:
+            break
+    if not has_independent_pair:
         return "mutate"
 
     recent_noncrash = [op for op in state.get("operator_history", [])[-5:] if op != "crash"]
@@ -336,6 +367,13 @@ def choose_secondary(primary: Dict[str, str], frontier: List[Dict[str, str]], st
 
         # Skip baseline elites — they have no "idea" to transplant
         if row.get("mutation_kind") == "baseline":
+            continue
+
+        # Skip elites in primary's direct mutation lineage (parent or child).
+        # The donor's only added "idea" relative to the base is something
+        # the base already has (or already lacks), so the crossover is
+        # informationally empty.
+        if not _lineage_independent(primary, row):
             continue
 
         # Skip elites whose description is too similar to primary (degenerate crossover)
