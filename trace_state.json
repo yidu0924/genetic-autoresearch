@@ -8,11 +8,21 @@
       "promoted_slot": "elite/0",
       "status": "ok",
       "val_bpb": "0.996898"
+    },
+    {
+      "exp_id": "exp0002",
+      "mutation_kind": "mutate",
+      "parent1": "fcc3407",
+      "parent2": "-",
+      "promoted_slot": "elite/1",
+      "status": "ok",
+      "val_bpb": "1.017796"
     }
   ],
-  "next_exp": 2,
+  "next_exp": 3,
   "operator_history": [
-    "baseline"
+    "baseline",
+    "mutate"
   ],
   "pair_history": {},
   "population_size": 4,
