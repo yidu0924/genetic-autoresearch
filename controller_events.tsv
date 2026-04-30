@@ -1,0 +1,2 @@
+step	event	detail	controller_sha
+1	init	run_tag=apr30-h100long-opus47-trace-selfmod-2, population_size=4	b233d7b98f69
