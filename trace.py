@@ -277,6 +277,15 @@ def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> st
     if len(frontier) < 2:
         return "mutate"
 
+    # Need at least 2 non-baseline elites for crossover to be non-degenerate:
+    # baseline elites carry no "idea" to transplant, and choose_secondary
+    # already filters them out. Without this guard, choose_secondary's
+    # fallback would pick a baseline elite anyway, producing a degenerate
+    # crossover (e.g. primary=mutated child, secondary=its own baseline parent).
+    non_baseline_elites = sum(1 for r in frontier if r.get("mutation_kind") != "baseline")
+    if non_baseline_elites < 2:
+        return "mutate"
+
     recent_noncrash = [op for op in state.get("operator_history", [])[-5:] if op != "crash"]
     crossover_count = sum(1 for op in recent_noncrash if op == "crossover")
 
