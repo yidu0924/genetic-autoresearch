@@ -6,3 +6,4 @@ Each loop iteration appends one line in the format:
 
 2026-04-30T23:14:45Z | next exp_id: exp0001 | choice: experiment | reason: did not consider controller step — this is the first experiment, need baseline signal first
 2026-04-30T23:24:59Z | next exp_id: exp0002 | choice: experiment | reason: did not consider controller step — only 1 experiment so far, need baseline signal first
+2026-04-30T23:32:48Z | next exp_id: exp0003 | choice: controller | reason: degenerate crossover suggested — primary=elite/1 with secondary forced to baseline elite/0 because no other non-baseline parents exist; choose_operator should gate crossover on >=2 non-baseline elites
