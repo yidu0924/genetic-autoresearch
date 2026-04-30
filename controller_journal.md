@@ -47,3 +47,58 @@ the same frontier (elite/0 baseline + elite/1 DEPTH=9) now returns
 `operator=mutate, parent1=80d458b (elite/1)` instead of the previous
 degenerate `operator=crossover, parent2=elite/0 (baseline)`.
 
+---
+
+## 2026-04-30T23:42 — pre-edit note (controller_sha=d650fa1fc126)
+
+**Problem**: at exp0004 the controller again suggested a degenerate
+crossover: primary=elite/2 (depth=9 + warmdown=0.3, val=1.020),
+secondary=elite/1 (depth=9, val=1.018). But elite/2's `parent1` is
+elite/1's commit — so elite/1 is the direct conceptual ancestor of
+elite/2, and the only "idea" elite/1 carries (DEPTH=9) is already in
+elite/2. Crossover between a parent and its direct child has no
+information content; transplanting any non-redundant property would
+either revert the child's mutation or be invented out of thin air
+(deviation from suggestion).
+
+The previous (just-installed) `non_baseline_elites < 2` gate doesn't
+catch this because we now have 2 non-baseline elites — they just happen
+to share the same lineage.
+
+**Planned change**: introduce a "lineage-independent" notion. Two
+non-baseline elites A and B are lineage-independent iff neither's
+`parent1` commit equals the other's `commit`. Add:
+
+1. A helper `_lineage_independent(a, b)` that does the direct
+   parent/child check.
+2. In `choose_operator`, replace the `non_baseline_elites < 2` count with
+   "exists a pair of lineage-independent non-baseline elites" (using the
+   helper). If no such pair, return `mutate`.
+3. In `choose_secondary`, also skip secondaries that are not
+   lineage-independent of `primary`. Keep the existing description-distance
+   filter. The fallback (which ignores filters) stays as a last resort.
+
+This is conservative: it still allows crossover once the search produces
+two non-baseline elites from disjoint mutation chains.
+
+**Expected effect**: with the current frontier (elite/0 baseline +
+elite/1 depth=9 + elite/2 depth=9+warmdown=0.3, where elite/2 is a
+descendant of elite/1), no lineage-independent pair exists, so the
+suggestion will become `mutate` from primary (whichever UCB picks).
+After a future mutation off elite/0 lands, lineage-independence will
+hold and crossover unlocks.
+
+## 2026-04-30T23:43 — post-edit note (controller_sha=80540eb*)
+
+**What changed**: Added helper `_lineage_independent(a, b)` (12 lines) and
+two callers: a "has_independent_pair" gate inside `choose_operator` (10
+lines) and a `_lineage_independent(primary, row)` skip filter inside
+`choose_secondary`'s loop (4 lines). Total +40 lines, no other logic
+touched.
+
+**Compile**: `python -m py_compile trace.py` → ok.
+
+**Confirmed behavior change**: re-running `python trace.py suggest` with
+the same frontier as before now returns `operator=mutate` instead of the
+degenerate `operator=crossover, parent2=elite/1`.
+
