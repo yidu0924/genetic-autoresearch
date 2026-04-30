@@ -1,5 +1,5 @@
 slot	tag	commit	val_bpb	memory_gb	params_m	role	parent1	parent2	mutation_kind	description	controller_sha	expansions	mean_child_gain	last_used_exp	last_improved_exp
-0	elite/0	fcc3407	0.996898	44.0	50.3	best	-	-	baseline	unmodified baseline (depth=8, SSSL, Muon+AdamW, 50.3M params)	b233d7b98f69	1	-0.020898	exp0002	exp0001
+0	elite/0	fcc3407	0.996898	44.0	50.3	best	-	-	baseline	unmodified baseline (depth=8, SSSL, Muon+AdamW, 50.3M params)	b233d7b98f69	2	-0.011335	exp0005	exp0001
 1	elite/1	80d458b	1.017796	60.5	80.9	diverse	fcc3407	-	mutate	DEPTH 8->9 (model_dim 512->640, params 50.3M->80.9M)	b233d7b98f69	1	-0.002612	exp0003	exp0002
-2	elite/2	66ca8f1	1.020408	60.5	80.9	diverse	80d458b	-	mutate	WARMDOWN_RATIO 0.5->0.3 from depth=9 (more time at full LR)	d650fa1fc126	1	0.007432	exp0004	exp0003
+2	elite/2	5b99afd	0.998669	44.0	50.3	lean	fcc3407	66ca8f1	crossover	crossover baseline + warmdown=0.3 idea -> depth=8 + WARMDOWN_RATIO=0.3	786d99d6529e	0	0.000000	exp0005	exp0005
 3	elite/3	64f83ef	1.012976	60.5	80.9	diverse	66ca8f1	-	mutate	MATRIX_LR 0.04->0.05 from depth=9+warmdown=0.3	786d99d6529e	0	0.000000	exp0004	exp0004
