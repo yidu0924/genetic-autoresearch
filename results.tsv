@@ -5,3 +5,4 @@ exp0003	66ca8f1	80d458b	-	1.020408	60.5	80.9	elite	mutate	WARMDOWN_RATIO 0.5->0.
 exp0004	64f83ef	66ca8f1	-	1.012976	60.5	80.9	elite	mutate	MATRIX_LR 0.04->0.05 from depth=9+warmdown=0.3	786d99d6529e	elite/3
 exp0005	5b99afd	fcc3407	66ca8f1	0.998669	44.0	50.3	elite	crossover	crossover baseline + warmdown=0.3 idea -> depth=8 + WARMDOWN_RATIO=0.3	786d99d6529e	elite/2
 exp0006	0558e1a	fcc3407	64f83ef	0.996469	44.0	50.3	elite	crossover	crossover baseline + MATRIX_LR=0.05 idea from elite/3 -> depth=8 + MATRIX_LR=0.05	9ab45400f34e	elite/0
+exp0007	02c9a8c	0558e1a	-	0.996112	44.0	50.3	elite	mutate	MATRIX_LR 0.05 -> 0.06 (continue sweep)	9ab45400f34e	elite/0

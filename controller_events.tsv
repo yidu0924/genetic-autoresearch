@@ -6,3 +6,4 @@ step	event	detail	controller_sha
 5	promote	exp0004 -> elite/3: frontier not full	786d99d6529e
 6	promote	exp0005 -> elite/2: strictly stronger than weakest elite	786d99d6529e
 7	promote	exp0006 -> elite/0: new global best	9ab45400f34e
+8	promote	exp0007 -> elite/0: new global best	9ab45400f34e
