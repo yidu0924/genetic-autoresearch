@@ -33,3 +33,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T05:11:03Z | next exp_id: exp0022 | choice: experiment | reason: considered controller step; just made one — re-suggest now produces mutate from elite/0 which is non-degenerate
 2026-05-01T05:18:06Z | next exp_id: exp0023 | choice: experiment | reason: considered controller step; rejected because suggestion is a fresh untried pair (elite/2,elite/3) producing untested combo MATRIX_LR=0.065+WD=0.05+EMB=0.5
 2026-05-01T05:25:11Z | next exp_id: exp0024 | choice: experiment | reason: considered controller step; rejected because mutating elite/1 with ADAM_BETAS opens a fresh untouched optimization axis
+2026-05-01T05:32:04Z | next exp_id: exp0025 | choice: experiment | reason: considered controller step; rejected because WARMDOWN sweep in untested direction (0.5->0.6) is a clean 1D test

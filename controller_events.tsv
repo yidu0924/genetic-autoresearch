@@ -24,3 +24,4 @@ step	event	detail	controller_sha
 23	discard	exp0022: did not clear promotion thresholds	621eb12717df
 24	discard	exp0023: did not clear promotion thresholds	621eb12717df
 25	discard	exp0024: did not clear promotion thresholds	621eb12717df
+26	promote	exp0025 -> elite/1: strictly stronger than weakest elite	621eb12717df
