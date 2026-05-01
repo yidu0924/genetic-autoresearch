@@ -12,3 +12,4 @@ exp0010	5842c72	02c9a8c	5b99afd	0.998453	44.0	50.3	elite	crossover	crossover MAT
 exp0011	de61b6b	5b99afd	-	0.998501	44.0	50.3	elite	mutate	EMBEDDING_LR 0.6 -> 0.5 from elite/2 (warmdown=0.3 base)	9ab45400f34e	elite/2
 exp0012	f68eb51	855fa48	de61b6b	0.997318	44.0	50.3	elite	crossover	crossover MATRIX_LR=0.07 base + EMBEDDING_LR=0.5 idea -> depth=8 + MATRIX_LR=0.07 + EMBEDDING_LR=0.5	9ab45400f34e	elite/1
 exp0013	d46e70f	5842c72	-	0.998798	44.0	50.3	ok	mutate	EMBEDDING_LR 0.6 -> 0.5 from elite/3 (MATRIX_LR=0.06+warmdown=0.3)	9ab45400f34e	-
+exp0014	451f99b	02c9a8c	de61b6b	0.996634	44.0	50.3	elite	crossover	crossover MATRIX_LR=0.06 + EMBEDDING_LR=0.5 idea -> depth=8 + MATRIX_LR=0.06 + EMBEDDING_LR=0.5	9ab45400f34e	elite/2
