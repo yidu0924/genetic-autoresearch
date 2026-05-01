@@ -20,3 +20,4 @@ exp0018	b46fd70	c57cda9	5842c72	0.997648	44.0	50.3	elite	crossover	crossover new
 exp0019	b26413d	c57cda9	-	0.995604	44.0	50.3	elite	mutate	WEIGHT_DECAY 0.15 -> 0.10 (continue sweep)	9ab45400f34e	elite/0
 exp0020	99be0ce	b26413d	a2abd27	0.996065	44.0	50.3	elite	crossover	crossover WD=0.10 base + MATRIX_LR=0.065 idea -> depth=8 + MATRIX_LR=0.065 + EMB=0.5 + WD=0.10	8b2b8cb57f10	elite/3
 exp0021	12e6b55	b26413d	-	0.996339	44.0	50.3	elite	mutate	WEIGHT_DECAY 0.10 -> 0.05 (continue sweep)	8b2b8cb57f10	elite/2
+exp0022	4ac0bf1	b26413d	-	0.997229	44.0	50.3	ok	mutate	WARMUP_RATIO 0.0 -> 0.05	621eb12717df	-
