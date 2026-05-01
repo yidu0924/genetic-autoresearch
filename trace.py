@@ -258,6 +258,28 @@ def coverage_score(row: Dict[str, str], frontier: List[Dict[str, str]]) -> float
     return 1.0 / math.sqrt(density + 1.0)
 
 
+def quality_gap_penalty(row: Dict[str, str], frontier: List[Dict[str, str]]) -> float:
+    """Penalize elites that are significantly worse than the best in the
+    frontier. Without this, UCB+novelty can keep picking known-bad elites
+    as primary because they're "underexplored" — wasting compute on
+    children of parents that are unlikely to produce a global best."""
+    try:
+        own_v = float(row.get("val_bpb", 1e9))
+    except (ValueError, TypeError):
+        return 0.0
+    vals = []
+    for r in frontier:
+        try:
+            vals.append(float(r.get("val_bpb", 1e9)))
+        except (ValueError, TypeError):
+            continue
+    if not vals:
+        return 0.0
+    best_v = min(vals)
+    delta = own_v - best_v  # >=0; positive = worse than best
+    return -2.0 * delta
+
+
 def select_primary(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> Dict[str, str]:
     total_expansions = max(1, sum(int(float(r.get("expansions") or 0.0)) for r in frontier))
     scored: List[Tuple[float, Dict[str, str]]] = []
@@ -268,6 +290,7 @@ def select_primary(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> Dic
         score = ucb_score(row, state, total_expansions)
         score += lam * novelty_score(row, frontier, state)
         score += gamma * coverage_score(row, frontier)
+        score += quality_gap_penalty(row, frontier)
         scored.append((score, row))
     scored.sort(key=lambda x: x[0], reverse=True)
     return scored[0][1]
