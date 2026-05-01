@@ -1,5 +1,5 @@
 slot	tag	commit	val_bpb	memory_gb	params_m	role	parent1	parent2	mutation_kind	description	controller_sha	expansions	mean_child_gain	last_used_exp	last_improved_exp
-0	elite/0	799f60f	0.987300	22.2	50.3	best	92164bd	-	mutate	TOTAL_BATCH=2**17 + DEVICE_BATCH=64 (more updates, freed VRAM)	621eb12717df	0	0.000000	exp0034	exp0034
+0	elite/0	dbbdc5a	0.986408	22.2	50.3	best	799f60f	0b91c83	crossover	crossover TOTAL_BATCH=2**17 base + warmdown=0.6 idea -> warmdown=0.6 helps at small batch	621eb12717df	0	0.000000	exp0035	exp0035
 1	elite/1	c1c146d	0.995688	44.0	50.3	lean	b26413d	-	mutate	WARMDOWN_RATIO 0.5 -> 0.6 (test more warmdown)	621eb12717df	3	-0.000363	exp0033	exp0025
-2	elite/2	0b91c83	0.987474	43.9	50.3	lean	92164bd	c1c146d	crossover	crossover new-best base + warmdown=0.6 idea -> tied with parent	621eb12717df	0	0.000000	exp0033	exp0033
+2	elite/2	0b91c83	0.987474	43.9	50.3	lean	92164bd	c1c146d	crossover	crossover new-best base + warmdown=0.6 idea -> tied with parent	621eb12717df	1	0.000446	exp0035	exp0033
 3	elite/3	99be0ce	0.996065	44.0	50.3	lean	b26413d	a2abd27	crossover	crossover WD=0.10 base + MATRIX_LR=0.065 idea -> depth=8 + MATRIX_LR=0.065 + EMB=0.5 + WD=0.10	8b2b8cb57f10	3	0.001929	exp0030	exp0020

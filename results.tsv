@@ -33,3 +33,4 @@ exp0031	89c0149	0747415	12e6b55	0.988622	43.9	50.3	elite	crossover	crossover TOT
 exp0032	92164bd	89c0149	-	0.987464	43.9	50.3	elite	mutate	MATRIX_LR 0.065 -> 0.06 from elite/0 at TOTAL_BATCH=2**18	621eb12717df	elite/0
 exp0033	0b91c83	92164bd	c1c146d	0.987474	43.9	50.3	elite	crossover	crossover new-best base + warmdown=0.6 idea -> tied with parent	621eb12717df	elite/2
 exp0034	799f60f	92164bd	-	0.987300	22.2	50.3	elite	mutate	TOTAL_BATCH=2**17 + DEVICE_BATCH=64 (more updates, freed VRAM)	621eb12717df	elite/0
+exp0035	dbbdc5a	799f60f	0b91c83	0.986408	22.2	50.3	elite	crossover	crossover TOTAL_BATCH=2**17 base + warmdown=0.6 idea -> warmdown=0.6 helps at small batch	621eb12717df	elite/0

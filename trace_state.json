@@ -305,9 +305,18 @@
       "promoted_slot": "elite/0",
       "status": "ok",
       "val_bpb": "0.987300"
+    },
+    {
+      "exp_id": "exp0035",
+      "mutation_kind": "crossover",
+      "parent1": "799f60f",
+      "parent2": "0b91c83",
+      "promoted_slot": "elite/0",
+      "status": "ok",
+      "val_bpb": "0.986408"
     }
   ],
-  "next_exp": 35,
+  "next_exp": 36,
   "operator_history": [
     "baseline",
     "mutate",
@@ -342,13 +351,15 @@
     "crossover",
     "mutate",
     "crossover",
-    "mutate"
+    "mutate",
+    "crossover"
   ],
   "pair_history": {
     "02c9a8c|5b99afd": 1,
     "02c9a8c|80d458b": 1,
     "02c9a8c|de61b6b": 1,
     "0747415|12e6b55": 1,
+    "0b91c83|799f60f": 1,
     "12e6b55|99be0ce": 1,
     "5842c72|a2abd27": 1,
     "5842c72|c57cda9": 1,
