@@ -44,17 +44,28 @@
       "promoted_slot": "elite/2",
       "status": "ok",
       "val_bpb": "0.998669"
+    },
+    {
+      "exp_id": "exp0006",
+      "mutation_kind": "crossover",
+      "parent1": "fcc3407",
+      "parent2": "64f83ef",
+      "promoted_slot": "elite/0",
+      "status": "ok",
+      "val_bpb": "0.996469"
     }
   ],
-  "next_exp": 6,
+  "next_exp": 7,
   "operator_history": [
     "baseline",
     "mutate",
     "mutate",
     "mutate",
+    "crossover",
     "crossover"
   ],
   "pair_history": {
+    "64f83ef|fcc3407": 1,
     "66ca8f1|fcc3407": 1
   },
   "population_size": 4,
