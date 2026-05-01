@@ -17,3 +17,4 @@ step	event	detail	controller_sha
 16	promote	exp0015 -> elite/1: improved parent slot	9ab45400f34e
 17	discard	exp0016: did not clear promotion thresholds	9ab45400f34e
 18	promote	exp0017 -> elite/0: new global best	9ab45400f34e
+19	promote	exp0018 -> elite/3: strictly stronger than weakest elite	9ab45400f34e
