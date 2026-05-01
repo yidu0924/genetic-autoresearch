@@ -7,3 +7,4 @@ exp0005	5b99afd	fcc3407	66ca8f1	0.998669	44.0	50.3	elite	crossover	crossover bas
 exp0006	0558e1a	fcc3407	64f83ef	0.996469	44.0	50.3	elite	crossover	crossover baseline + MATRIX_LR=0.05 idea from elite/3 -> depth=8 + MATRIX_LR=0.05	9ab45400f34e	elite/0
 exp0007	02c9a8c	0558e1a	-	0.996112	44.0	50.3	elite	mutate	MATRIX_LR 0.05 -> 0.06 (continue sweep)	9ab45400f34e	elite/0
 exp0008	6e59051	02c9a8c	80d458b	1.013826	60.5	80.9	elite	crossover	crossover elite/0 + elite/1 -> DEPTH=9 + MATRIX_LR=0.06	9ab45400f34e	elite/1
+exp0009	855fa48	02c9a8c	-	0.998492	44.0	50.3	elite	mutate	MATRIX_LR 0.06 -> 0.07	9ab45400f34e	elite/1
