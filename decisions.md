@@ -41,3 +41,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T06:06:40Z | next exp_id: exp0030 | choice: experiment | reason: considered controller step; rejected because mutating elite/3 with untouched TOTAL_BATCH_SIZE axis is high-value; search still healthy, controller producing fresh suggestions
 2026-05-01T06:13:45Z | next exp_id: exp0031 | choice: experiment | reason: considered controller step; rejected because exp0030 just produced massive new best — search very healthy, follow-up crossover is fresh combination
 2026-05-01T06:20:51Z | next exp_id: exp0032 | choice: experiment | reason: considered controller step; rejected because two consecutive new bests — search extremely healthy, continue exploring TOTAL_BATCH=2**18 regime
+2026-05-01T06:27:38Z | next exp_id: exp0033 | choice: experiment | reason: considered controller step; rejected because three consecutive new bests — search extremely productive
