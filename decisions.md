@@ -31,3 +31,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T05:01:17Z | next exp_id: exp0021 | choice: experiment | reason: considered controller step; rejected — search productive, continue WEIGHT_DECAY sweep
 2026-05-01T05:09:08Z | next exp_id: exp0022 | choice: controller | reason: suggested crossover(elite/0,elite/1) repeats the pair used in exp0020 — only one lineage-independent secondary exists, and pair_penalty is too weak to prevent re-suggestion; need untried-pair gate
 2026-05-01T05:11:03Z | next exp_id: exp0022 | choice: experiment | reason: considered controller step; just made one — re-suggest now produces mutate from elite/0 which is non-degenerate
+2026-05-01T05:18:06Z | next exp_id: exp0023 | choice: experiment | reason: considered controller step; rejected because suggestion is a fresh untried pair (elite/2,elite/3) producing untested combo MATRIX_LR=0.065+WD=0.05+EMB=0.5
