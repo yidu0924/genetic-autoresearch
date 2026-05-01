@@ -25,3 +25,4 @@ exp0023	a6ef071	99be0ce	12e6b55	0.997148	44.0	50.3	ok	crossover	crossover MATRIX
 exp0024	d8ec132	a2abd27	-	0.996539	44.0	50.3	ok	mutate	ADAM_BETAS (0.8,0.95) -> (0.85,0.95) from elite/1	621eb12717df	-
 exp0025	c1c146d	b26413d	-	0.995688	44.0	50.3	elite	mutate	WARMDOWN_RATIO 0.5 -> 0.6 (test more warmdown)	621eb12717df	elite/1
 exp0026	47fc7d2	99be0ce	c1c146d	0.996200	44.0	50.3	ok	crossover	crossover MATRIX_LR=0.065+WD=0.10+EMB=0.5 base + warmdown=0.6 idea	621eb12717df	-
+exp0027	1bf3a3a	12e6b55	-	0.996562	44.0	50.3	ok	mutate	SCALAR_LR 0.5 -> 0.3 from elite/2	621eb12717df	-

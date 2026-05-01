@@ -35,3 +35,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T05:25:11Z | next exp_id: exp0024 | choice: experiment | reason: considered controller step; rejected because mutating elite/1 with ADAM_BETAS opens a fresh untouched optimization axis
 2026-05-01T05:32:04Z | next exp_id: exp0025 | choice: experiment | reason: considered controller step; rejected because WARMDOWN sweep in untested direction (0.5->0.6) is a clean 1D test
 2026-05-01T05:39:04Z | next exp_id: exp0026 | choice: experiment | reason: considered controller step; rejected because untried pair (elite/3,elite/1) producing fresh combination
+2026-05-01T05:45:58Z | next exp_id: exp0027 | choice: experiment | reason: considered controller step; rejected because mutating elite/2 with SCALAR_LR opens an untouched axis
