@@ -25,3 +25,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T04:22:21Z | next exp_id: exp0016 | choice: experiment | reason: considered controller step; rejected because crossover suggestion is a fresh combination (MATRIX_LR=0.065+warmdown=0.3) not yet tested
 2026-05-01T04:29:28Z | next exp_id: exp0017 | choice: experiment | reason: considered controller step; rejected because mutating elite/2 with a fresh untouched knob (WEIGHT_DECAY) opens a new search axis
 2026-05-01T04:36:50Z | next exp_id: exp0018 | choice: experiment | reason: considered controller step; rejected because suggestion is a fresh untested 5-knob combination, even though warmdown=0.3 has been worse historically — taking the bet
+2026-05-01T04:43:52Z | next exp_id: exp0019 | choice: experiment | reason: considered controller step; rejected because last experiment produced new global best — search healthy, continue WEIGHT_DECAY sweep

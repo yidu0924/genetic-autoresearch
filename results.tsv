@@ -17,3 +17,4 @@ exp0015	a2abd27	f68eb51	-	0.996395	44.0	50.3	elite	mutate	MATRIX_LR 0.07 -> 0.06
 exp0016	d241be0	5842c72	a2abd27	0.999501	44.0	50.3	ok	crossover	crossover MATRIX_LR=0.06+warmdown=0.3 base + MATRIX_LR=0.065 idea -> warmdown=0.3 + MATRIX_LR=0.065	9ab45400f34e	-
 exp0017	c57cda9	451f99b	-	0.995722	44.0	50.3	elite	mutate	WEIGHT_DECAY 0.2 -> 0.15 from elite/2 (MATRIX_LR=0.06+EMBEDDING_LR=0.5)	9ab45400f34e	elite/0
 exp0018	b46fd70	c57cda9	5842c72	0.997648	44.0	50.3	elite	crossover	crossover new-best base + warmdown=0.3 idea -> warmdown=0.3 onto WD=0.15+EMB=0.5+MLR=0.06	9ab45400f34e	elite/3
+exp0019	b26413d	c57cda9	-	0.995604	44.0	50.3	elite	mutate	WEIGHT_DECAY 0.15 -> 0.10 (continue sweep)	9ab45400f34e	elite/0
