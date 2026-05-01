@@ -350,15 +350,22 @@ def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any], resul
     # Without this, a frontier built up via a single mutation chain
     # (elite/0 -> elite/1 -> elite/2) produces degenerate crossovers
     # where the "donor" carries no idea the "base" doesn't already have.
-    has_independent_pair = False
+    # Also require at least one such pair to be UNTRIED (not in
+    # pair_history). Otherwise we re-run the same crossover when
+    # pair_penalty is too weak to flip the choice given no alternatives.
+    pair_history = state.get("pair_history", {})
+    has_untried_independent_pair = False
     for i, a in enumerate(non_baseline):
         for b in non_baseline[i + 1:]:
-            if _lineage_independent(a, b, results):
-                has_independent_pair = True
+            if not _lineage_independent(a, b, results):
+                continue
+            pair_key = "|".join(sorted([a.get("commit", ""), b.get("commit", "")]))
+            if pair_history.get(pair_key, 0) == 0:
+                has_untried_independent_pair = True
                 break
-        if has_independent_pair:
+        if has_untried_independent_pair:
             break
-    if not has_independent_pair:
+    if not has_untried_independent_pair:
         return "mutate"
 
     recent_noncrash = [op for op in state.get("operator_history", [])[-5:] if op != "crash"]
@@ -516,6 +523,27 @@ def cmd_suggest(args: argparse.Namespace) -> int:
         return 0
     primary = select_primary(frontier, state)
     operator = choose_operator(frontier, state, results)
+    # Per-primary check: if the chosen primary has no untried
+    # lineage-independent partner, downgrade to mutate. This catches the
+    # case where global crossover is feasible (some other primary has an
+    # untried partner) but the picked primary itself has only tried or
+    # ineligible partners — avoiding a no-op duplicate crossover.
+    if operator == "crossover":
+        pair_history = state.get("pair_history", {})
+        primary_has_untried_partner = False
+        for row in frontier:
+            if row.get("tag") == primary.get("tag"):
+                continue
+            if row.get("mutation_kind") == "baseline":
+                continue
+            if not _lineage_independent(primary, row, results):
+                continue
+            pair_key = "|".join(sorted([primary.get("commit", ""), row.get("commit", "")]))
+            if pair_history.get(pair_key, 0) == 0:
+                primary_has_untried_partner = True
+                break
+        if not primary_has_untried_partner:
+            operator = "mutate"
     if operator == "mutate":
         suggestion = Suggestion(
             operator="mutate",

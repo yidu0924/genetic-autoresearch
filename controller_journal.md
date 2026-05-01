@@ -209,3 +209,44 @@ elite/2 (which is in elite/0's deep ancestry) is correctly skipped.
 elite/1 and elite/0 share only a common ancestor 02c9a8c, neither is
 the other's ancestor.
 
+---
+
+## 2026-05-01T05:09 — pre-edit note (controller_sha=8b2b8cb57f10)
+
+**Problem**: at exp0022 the suggestion is again
+`crossover(elite/0=b26413d, elite/1=a2abd27)`. Pair_history shows that
+exact pair was used in exp0020 (key `a2abd27|b26413d` → 1). With the
+current frontier, elite/2 and elite/3 are direct children of elite/0
+(fail multi-hop lineage), leaving elite/1 as the *only* viable
+secondary. The existing `pair_penalty = 0.15 * used` is too weak to
+flip the choice when there are no alternatives.
+
+**Planned change**: in `choose_operator`, after the lineage-independent
+gate, add an "untried pair exists" gate. If every lineage-independent
+pair of non-baseline elites has been crossed at least once, return
+`mutate` instead. This avoids re-running the same crossover when the
+search has exhausted the set of unique informative crosses.
+
+**Expected effect**: with the current frontier (only 1 viable pair, and
+that pair already used), the operator becomes `mutate` from the
+quality-first primary (elite/0). That gives the search room to keep
+mutating elite/0 until a new lineage opens up via elite/1's promotion.
+
+## 2026-05-01T05:11 — post-edit note (controller_sha=*)
+
+**What changed**: Added two related gates. First, in `choose_operator`,
+the existing lineage-pair check is augmented to also require that at
+least one such pair is *untried* (not in `pair_history`). Second, in
+`cmd_suggest`, after `select_primary` and `choose_operator`, if the
+chosen primary itself has no untried lineage-independent partner, the
+operator is downgraded to `mutate`. The first gate addresses the global
+case (no useful crosses anywhere); the second handles the local case
+(this primary specifically has nothing fresh to cross with). +27 lines.
+
+**Compile**: `python -m py_compile trace.py` → ok.
+
+**Confirmed behavior change**: re-suggest with the current frontier
+(primary=elite/0 has only elite/1 as a viable partner, and that pair
+was used in exp0020) now produces `mutate` from elite/0 instead of the
+duplicate crossover.
+
