@@ -102,3 +102,64 @@ touched.
 the same frontier as before now returns `operator=mutate` instead of the
 degenerate `operator=crossover, parent2=elite/1`.
 
+---
+
+## 2026-05-01T00:02 — pre-edit note (controller_sha=786d99d6529e)
+
+**Problem**: at exp0006 the controller suggested crossover(primary=elite/1
+depth=9 val=1.018, secondary=elite/2-new depth=8+warmdown=0.3 val=0.999).
+Lineage-independent check passes because elite/1 and elite/2-new only
+share a deeper common root (baseline). But the only "idea" elite/2-new
+carries is `WARMDOWN_RATIO=0.3`, and applying it to elite/1's depth=9
+base recreates exp0003's exact recipe — a duplicate experiment.
+
+The deeper pathology is that `select_primary` keeps picking elites with
+much-worse val_bpb than the best. Current frontier:
+  elite/0 val=0.997 (best, baseline)
+  elite/1 val=1.018 (much worse, depth=9)
+  elite/2 val=0.999 (slightly worse)
+  elite/3 val=1.013 (much worse)
+
+UCB picks elite/1 because its expansions=0 and recency penalty is small,
+and novelty/coverage favor it. UCB by design ignores raw quality and
+relies on `mean_child_gain` to learn which parents are productive — but
+with only 4 experiments worth of data, that's noisy. Meanwhile, elite/0
+is *clearly* the best parent to mutate from.
+
+**Planned change**: add a quality-gap penalty to the score in
+`select_primary`. For each elite, compute `delta = val_bpb - best_val`
+across the frontier and subtract `kappa * delta` from the score.
+With `kappa = 2.0`, an elite that is 0.02 worse than best loses 0.04 in
+score — large enough to outweigh the typical UCB explore (~0.05) +
+novelty (~0.15 * 0.85) + coverage (~0.10 * 0.7) margins for moderately
+worse elites, but not catastrophic enough to kill exploration entirely
+when elites are close in quality.
+
+**Expected effect**: with the current frontier, primary should switch to
+elite/0 (best). That makes mutate-from-baseline the default, and the
+only lineage-independent secondary (elite/3, since elite/1 and elite/2
+are direct children of elite/0) carries a fresh idea (MATRIX_LR=0.05)
+that hasn't been tried at depth=8.
+
+## 2026-05-01T00:08 — post-edit note (controller_sha=ef98a3*)
+
+**What changed**: Initial attempt was `quality_gap_penalty` added to
+`select_primary` scoring with `kappa=2`, then `kappa=5`. Debug print
+showed UCB's recency penalty (-0.2 for age=0) and the negative
+mean_child_gain on elite/0 (-0.011, dragged down by both DEPTH=9 and
+WARMDOWN=0.3 worse-children) were too dominant for a pure quality
+penalty to overcome at any reasonable kappa.
+
+Pivoted to a hard rule instead: `select_primary` now does a quality-first
+selection — pick the lowest-val_bpb elite directly while its expansion
+count is < 3. Falls back to the existing UCB+novelty+coverage scoring
+afterwards. Removed the `quality_gap_penalty` function (never paid off
+in the score; the hard rule subsumes it). +21 lines / -16 lines net.
+
+**Compile**: `python -m py_compile trace.py` → ok.
+
+**Confirmed behavior change**: re-suggest now produces
+`crossover(primary=elite/0, secondary=elite/3)` — the previous
+elite/1+elite/2 degenerate crossover is gone, and the new suggestion
+carries a fresh idea (MATRIX_LR=0.05) onto the baseline base.
+
