@@ -30,3 +30,4 @@ step	event	detail	controller_sha
 29	discard	exp0028: did not clear promotion thresholds	621eb12717df
 30	discard	exp0029: did not clear promotion thresholds	621eb12717df
 31	promote	exp0030 -> elite/0: new global best	621eb12717df
+32	promote	exp0031 -> elite/0: new global best	621eb12717df

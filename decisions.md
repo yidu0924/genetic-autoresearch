@@ -39,3 +39,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T05:52:49Z | next exp_id: exp0028 | choice: experiment | reason: considered controller step; rejected because mutating elite/0 with untouched UNEMBEDDING_LR axis is high-value
 2026-05-01T05:59:39Z | next exp_id: exp0029 | choice: experiment | reason: considered controller step; rejected because continuing WARMDOWN sweep direction (0.6->0.7) is a clean 1D test
 2026-05-01T06:06:40Z | next exp_id: exp0030 | choice: experiment | reason: considered controller step; rejected because mutating elite/3 with untouched TOTAL_BATCH_SIZE axis is high-value; search still healthy, controller producing fresh suggestions
+2026-05-01T06:13:45Z | next exp_id: exp0031 | choice: experiment | reason: considered controller step; rejected because exp0030 just produced massive new best — search very healthy, follow-up crossover is fresh combination

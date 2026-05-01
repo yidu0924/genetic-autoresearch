@@ -29,3 +29,4 @@ exp0027	1bf3a3a	12e6b55	-	0.996562	44.0	50.3	ok	mutate	SCALAR_LR 0.5 -> 0.3 from
 exp0028	91c8f93	b26413d	-	0.996639	44.0	50.3	ok	mutate	UNEMBEDDING_LR 0.004 -> 0.005 from elite/0	621eb12717df	-
 exp0029	7d603f0	c1c146d	-	0.996704	44.0	50.3	ok	mutate	WARMDOWN 0.6 -> 0.7 (continue sweep)	621eb12717df	-
 exp0030	0747415	99be0ce	-	0.989060	43.9	50.3	elite	mutate	TOTAL_BATCH_SIZE 2**19 -> 2**18 from elite/3 (more updates)	621eb12717df	elite/0
+exp0031	89c0149	0747415	12e6b55	0.988622	43.9	50.3	elite	crossover	crossover TOTAL_BATCH=2**18 base + WD=0.05 idea -> WD=0.05 helps in small batch regime	621eb12717df	elite/0
