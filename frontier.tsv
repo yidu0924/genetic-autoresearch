@@ -2,4 +2,4 @@ slot	tag	commit	val_bpb	memory_gb	params_m	role	parent1	parent2	mutation_kind	de
 0	elite/0	02c9a8c	0.996112	44.0	50.3	best	0558e1a	-	mutate	MATRIX_LR 0.05 -> 0.06 (continue sweep)	9ab45400f34e	3	-0.007478	exp0010	exp0007
 1	elite/1	f68eb51	0.997318	44.0	50.3	lean	855fa48	de61b6b	crossover	crossover MATRIX_LR=0.07 base + EMBEDDING_LR=0.5 idea -> depth=8 + MATRIX_LR=0.07 + EMBEDDING_LR=0.5	9ab45400f34e	0	0.000000	exp0012	exp0012
 2	elite/2	de61b6b	0.998501	44.0	50.3	lean	5b99afd	-	mutate	EMBEDDING_LR 0.6 -> 0.5 from elite/2 (warmdown=0.3 base)	9ab45400f34e	1	0.000587	exp0012	exp0011
-3	elite/3	5842c72	0.998453	44.0	50.3	lean	02c9a8c	5b99afd	crossover	crossover MATRIX_LR=0.06 base + warmdown=0.3 idea -> depth=8 + MATRIX_LR=0.06 + warmdown=0.3	9ab45400f34e	0	0.000000	exp0010	exp0010
+3	elite/3	5842c72	0.998453	44.0	50.3	lean	02c9a8c	5b99afd	crossover	crossover MATRIX_LR=0.06 base + warmdown=0.3 idea -> depth=8 + MATRIX_LR=0.06 + warmdown=0.3	9ab45400f34e	1	-0.000345	exp0013	exp0010
