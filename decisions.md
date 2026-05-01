@@ -16,3 +16,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T00:14:11Z | next exp_id: exp0007 | choice: experiment | reason: considered controller step; rejected because exp0006 just produced a new global best (search is now healthy and productive)
 2026-05-01T00:21:15Z | next exp_id: exp0008 | choice: experiment | reason: considered controller step; rejected because last 2 experiments produced new global bests and the crossover suggestion is a fresh combination (depth=9 + MATRIX_LR=0.06) not a duplicate
 2026-05-01T00:28:20Z | next exp_id: exp0009 | choice: experiment | reason: considered controller step; rejected because the MATRIX_LR sweep on depth=8 has produced 2 new bests (search healthy), continue
+2026-05-01T00:35:21Z | next exp_id: exp0010 | choice: experiment | reason: considered controller step; rejected because suggestion is a fresh combination (depth=8 + MATRIX_LR=0.06 + WARMDOWN=0.3), not a duplicate, search still healthy
