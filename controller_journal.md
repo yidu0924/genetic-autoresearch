@@ -250,3 +250,42 @@ case (no useful crosses anywhere); the second handles the local case
 was used in exp0020) now produces `mutate` from elite/0 instead of the
 duplicate crossover.
 
+---
+
+## 2026-05-01T06:57 — pre-edit note (controller_sha=621eb12717df)
+
+**Problem**: at exp0037 the suggestion is `crossover(elite/0=dbbdc5a,
+elite/1=c1c146d)`. The "idea" elite/1 carries (warmdown=0.6) is already
+in elite/0 — but only via the parent2 chain. elite/0's full lineage is:
+
+  dbbdc5a (parent1=799f60f, parent2=0b91c83)
+    parent2 0b91c83 was exp0033, which had parent2=c1c146d=elite/1
+
+So elite/1 IS a conceptual ancestor of elite/0 once parent2 chains are
+included. `_conceptual_ancestors` currently walks only parent1, so it
+misses this. The suggested crossover would produce an exact duplicate
+of elite/0's train.py (no diff).
+
+**Planned change**: extend `_conceptual_ancestors` to BFS-walk both
+parent1 and parent2 chains. This conservatively over-counts ancestry
+(parent2 in crossover doesn't structurally inherit train.py the way
+parent1 does), but the conservative behavior is correct here: if
+donor's mutation has been *applied* to base via any prior crossover,
+re-applying it is degenerate.
+
+**Expected effect**: re-suggest will skip elite/1 as a secondary for
+elite/0, falling through to either mutate or crossover with a different
+elite. With current frontier, this likely produces mutate from elite/0.
+
+## 2026-05-01T06:59 — post-edit note
+
+**What changed**: Replaced the linear parent1-only walk in
+`_conceptual_ancestors` with a BFS that follows both parent1 and
+parent2. Same set semantics; now strictly more conservative about
+classifying elites as related.
+
+**Compile**: `python -m py_compile trace.py` → ok.
+
+**Confirmed behavior change**: re-suggest now produces `mutate` from
+elite/0 instead of the no-op crossover with elite/1.
+

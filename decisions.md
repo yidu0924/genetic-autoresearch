@@ -45,3 +45,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T06:34:37Z | next exp_id: exp0034 | choice: experiment | reason: considered controller step; rejected because doubling-down on the productive batch-size direction is a clean single-idea mutation (needs both TOTAL_BATCH and DEVICE_BATCH due to integer constraint)
 2026-05-01T06:41:48Z | next exp_id: exp0035 | choice: experiment | reason: considered controller step; rejected — fresh combination, search highly productive
 2026-05-01T06:48:44Z | next exp_id: exp0036 | choice: experiment | reason: considered controller step; rejected — continuing the productive smaller-batch direction
+2026-05-01T06:57:06Z | next exp_id: exp0037 | choice: controller | reason: suggested crossover(elite/0,elite/1) is no-op — elite/1's warmdown=0.6 idea is already in elite/0 via parent2 chain (dbbdc5a → 0b91c83 → c1c146d=elite/1); _conceptual_ancestors only walks parent1

@@ -286,23 +286,30 @@ def select_primary(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> Dic
 
 
 def _conceptual_ancestors(commit: str, results: List[Dict[str, str]]) -> set:
-    """Walk the parent1 chain (using results.tsv) to collect all
-    conceptual ancestors of a commit. Returns a set including the commit
-    itself. The chain is conceptual (parent1 from the bookkeeping), not
-    git history — this matches how the controller reasons about
-    inherited mutations."""
+    """BFS-walk both parent1 AND parent2 chains (using results.tsv) to
+    collect all conceptual ancestors of a commit. Returns a set including
+    the commit itself. Following parent2 in addition to parent1 is
+    conservative: parent2 in crossover doesn't structurally inherit
+    train.py the way parent1 does, but if a mutation idea has been
+    *applied* to the lineage via any prior crossover, re-applying it is
+    degenerate and we want to skip it."""
     if not commit or commit in {"-", ""}:
         return set()
-    parent_map = {}
+    parents_map = {}
     for r in results:
         c = r.get("commit", "")
         if c:
-            parent_map[c] = r.get("parent1", "")
+            parents_map[c] = (r.get("parent1", ""), r.get("parent2", ""))
     ancestors = set()
-    cur = commit
-    while cur and cur not in {"-", ""} and cur not in ancestors:
+    queue = [commit]
+    while queue:
+        cur = queue.pop()
+        if not cur or cur in {"-", ""} or cur in ancestors:
+            continue
         ancestors.add(cur)
-        cur = parent_map.get(cur, "")
+        p1, p2 = parents_map.get(cur, ("", ""))
+        queue.append(p1)
+        queue.append(p2)
     return ancestors
 
 
