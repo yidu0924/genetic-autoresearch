@@ -18,3 +18,4 @@ Each loop iteration appends one line in the format:
 2026-05-01T00:28:20Z | next exp_id: exp0009 | choice: experiment | reason: considered controller step; rejected because the MATRIX_LR sweep on depth=8 has produced 2 new bests (search healthy), continue
 2026-05-01T00:35:21Z | next exp_id: exp0010 | choice: experiment | reason: considered controller step; rejected because suggestion is a fresh combination (depth=8 + MATRIX_LR=0.06 + WARMDOWN=0.3), not a duplicate, search still healthy
 2026-05-01T00:42:59Z | next exp_id: exp0011 | choice: experiment | reason: considered controller step; rejected because elite/2 is only 0.0026 worse than best (not a known-bad parent) and we have not over-stretched the controller-change budget
+2026-05-01T00:49:48Z | next exp_id: exp0012 | choice: experiment | reason: considered controller step; rejected because suggestion is fresh combination (MATRIX_LR=0.07 + EMBEDDING_LR=0.5), not a duplicate
