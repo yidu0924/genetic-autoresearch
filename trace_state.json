@@ -242,9 +242,18 @@
       "promoted_slot": "-",
       "status": "ok",
       "val_bpb": "0.996562"
+    },
+    {
+      "exp_id": "exp0028",
+      "mutation_kind": "mutate",
+      "parent1": "b26413d",
+      "parent2": "-",
+      "promoted_slot": "-",
+      "status": "ok",
+      "val_bpb": "0.996639"
     }
   ],
-  "next_exp": 28,
+  "next_exp": 29,
   "operator_history": [
     "baseline",
     "mutate",
@@ -272,6 +281,7 @@
     "mutate",
     "mutate",
     "crossover",
+    "mutate",
     "mutate"
   ],
   "pair_history": {
