@@ -285,22 +285,54 @@ def select_primary(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> Dic
     return scored[0][1]
 
 
-def _lineage_independent(a: Dict[str, str], b: Dict[str, str]) -> bool:
-    """Two elites are lineage-independent if neither's parent1 commit
-    equals the other's commit. This catches direct parent/child pairs,
-    which carry no information to transplant via crossover."""
+def _conceptual_ancestors(commit: str, results: List[Dict[str, str]]) -> set:
+    """Walk the parent1 chain (using results.tsv) to collect all
+    conceptual ancestors of a commit. Returns a set including the commit
+    itself. The chain is conceptual (parent1 from the bookkeeping), not
+    git history — this matches how the controller reasons about
+    inherited mutations."""
+    if not commit or commit in {"-", ""}:
+        return set()
+    parent_map = {}
+    for r in results:
+        c = r.get("commit", "")
+        if c:
+            parent_map[c] = r.get("parent1", "")
+    ancestors = set()
+    cur = commit
+    while cur and cur not in {"-", ""} and cur not in ancestors:
+        ancestors.add(cur)
+        cur = parent_map.get(cur, "")
+    return ancestors
+
+
+def _lineage_independent(a: Dict[str, str], b: Dict[str, str], results: Optional[List[Dict[str, str]]] = None) -> bool:
+    """Two elites are lineage-independent iff neither's commit appears
+    in the other's full conceptual ancestor chain (walked via parent1
+    in results.tsv). This catches both direct and multi-hop ancestral
+    relationships — crossover between an elite and one of its conceptual
+    ancestors is degenerate because the ancestor's mutations are already
+    in the descendant by inheritance."""
     a_commit = a.get("commit", "")
     b_commit = b.get("commit", "")
-    a_parent1 = a.get("parent1", "")
-    b_parent1 = b.get("parent1", "")
-    if a_commit and a_commit == b_parent1:
-        return False
-    if b_commit and b_commit == a_parent1:
+    if not a_commit or not b_commit:
+        return True
+    if results is None:
+        # Fallback: direct parent/child only (preserves old behavior
+        # for callers that haven't been updated)
+        a_parent1 = a.get("parent1", "")
+        b_parent1 = b.get("parent1", "")
+        if a_commit == b_parent1 or b_commit == a_parent1:
+            return False
+        return True
+    a_anc = _conceptual_ancestors(a_commit, results)
+    b_anc = _conceptual_ancestors(b_commit, results)
+    if b_commit in a_anc or a_commit in b_anc:
         return False
     return True
 
 
-def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> str:
+def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any], results: Optional[List[Dict[str, str]]] = None) -> str:
     if len(frontier) < 2:
         return "mutate"
 
@@ -314,14 +346,14 @@ def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> st
         return "mutate"
 
     # Need at least one lineage-independent pair: two non-baseline elites
-    # neither of which is the direct conceptual parent of the other.
+    # where neither appears in the other's conceptual ancestor chain.
     # Without this, a frontier built up via a single mutation chain
     # (elite/0 -> elite/1 -> elite/2) produces degenerate crossovers
     # where the "donor" carries no idea the "base" doesn't already have.
     has_independent_pair = False
     for i, a in enumerate(non_baseline):
         for b in non_baseline[i + 1:]:
-            if _lineage_independent(a, b):
+            if _lineage_independent(a, b, results):
                 has_independent_pair = True
                 break
         if has_independent_pair:
@@ -367,7 +399,7 @@ def choose_operator(frontier: List[Dict[str, str]], state: Dict[str, Any]) -> st
     return "mutate"
 
 
-def choose_secondary(primary: Dict[str, str], frontier: List[Dict[str, str]], state: Dict[str, Any]) -> Dict[str, str]:
+def choose_secondary(primary: Dict[str, str], frontier: List[Dict[str, str]], state: Dict[str, Any], results: Optional[List[Dict[str, str]]] = None) -> Dict[str, str]:
     pair_history = state.get("pair_history", {})
     best_score = None
     best_row = None
@@ -381,11 +413,12 @@ def choose_secondary(primary: Dict[str, str], frontier: List[Dict[str, str]], st
         if row.get("mutation_kind") == "baseline":
             continue
 
-        # Skip elites in primary's direct mutation lineage (parent or child).
-        # The donor's only added "idea" relative to the base is something
-        # the base already has (or already lacks), so the crossover is
-        # informationally empty.
-        if not _lineage_independent(primary, row):
+        # Skip elites in primary's conceptual mutation lineage (any
+        # ancestor or descendant via parent1 chain). The donor's only
+        # added "idea" relative to the base is something the base already
+        # has (or already lacks), so the crossover is informationally
+        # empty.
+        if not _lineage_independent(primary, row, results):
             continue
 
         # Skip elites whose description is too similar to primary (degenerate crossover)
@@ -469,6 +502,7 @@ def cmd_status(args: argparse.Namespace) -> int:
 def cmd_suggest(args: argparse.Namespace) -> int:
     state = load_state()
     frontier = load_frontier()
+    results = read_tsv(RESULTS_PATH)
     if not frontier:
         suggestion = Suggestion(
             operator="baseline",
@@ -481,7 +515,7 @@ def cmd_suggest(args: argparse.Namespace) -> int:
         print(json.dumps(asdict(suggestion), indent=2))
         return 0
     primary = select_primary(frontier, state)
-    operator = choose_operator(frontier, state)
+    operator = choose_operator(frontier, state, results)
     if operator == "mutate":
         suggestion = Suggestion(
             operator="mutate",
@@ -494,7 +528,7 @@ def cmd_suggest(args: argparse.Namespace) -> int:
                       f"Do one coherent mutation from this base.",
         )
     else:
-        secondary = choose_secondary(primary, frontier, state)
+        secondary = choose_secondary(primary, frontier, state, results)
         suggestion = Suggestion(
             operator="crossover",
             parent1=primary["commit"],

@@ -163,3 +163,49 @@ in the score; the hard rule subsumes it). +21 lines / -16 lines net.
 elite/1+elite/2 degenerate crossover is gone, and the new suggestion
 carries a fresh idea (MATRIX_LR=0.05) onto the baseline base.
 
+---
+
+## 2026-05-01T04:51 — pre-edit note (controller_sha=9ab45400f34e)
+
+**Problem**: at exp0020 the controller suggested
+`crossover(primary=elite/0=b26413d, secondary=elite/2=451f99b)`. The
+direct-parent lineage check passed because elite/0.parent1=c57cda9 and
+elite/2.parent1=02c9a8c — neither equals the other's commit. But elite/2
+is a *grandparent* of elite/0 in the conceptual chain
+(b26413d → c57cda9 → 451f99b → 02c9a8c → 0558e1a → fcc3407). So
+elite/2's mutation idea (EMBEDDING_LR=0.5) is already in elite/0 by
+inheritance through c57cda9. The crossover would be a no-op + noise.
+
+**Planned change**: replace the direct parent/child check in
+`_lineage_independent` with full conceptual-ancestor walks. Build a
+helper `_conceptual_ancestors(commit, results)` that walks the parent1
+chain via `results.tsv` and returns the set of all ancestor commits.
+Two elites are lineage-independent iff neither's commit appears in the
+other's ancestor set.
+
+Pass `past_results` (loaded once in `cmd_suggest`) through to
+`choose_operator` and `choose_secondary` so they can call
+`_lineage_independent` with results context.
+
+**Expected effect**: with the current frontier (elite/2 is an ancestor
+of elite/0), the suggestion should switch to a non-degenerate
+operator: either mutate from elite/0, or crossover with elite/1 or
+elite/3 (the only lineage-independent secondaries).
+
+## 2026-05-01T04:54 — post-edit note (controller_sha=ce4*)
+
+**What changed**: Added `_conceptual_ancestors(commit, results)` helper
+that walks the parent1 chain via results.tsv. Updated
+`_lineage_independent` to take an optional `results` parameter and use
+ancestor sets when provided (fallback to direct-only check otherwise).
+Threaded `results` through `choose_operator`, `choose_secondary`, and
+`cmd_suggest`. ~30 lines added, ~10 lines modified.
+
+**Compile**: `python -m py_compile trace.py` → ok.
+
+**Confirmed behavior change**: re-suggest now produces
+`crossover(primary=elite/0=b26413d, secondary=elite/1=a2abd27)` —
+elite/2 (which is in elite/0's deep ancestry) is correctly skipped.
+elite/1 and elite/0 share only a common ancestor 02c9a8c, neither is
+the other's ancestor.
+
