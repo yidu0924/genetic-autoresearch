@@ -170,9 +170,18 @@
       "promoted_slot": "elite/0",
       "status": "ok",
       "val_bpb": "0.995604"
+    },
+    {
+      "exp_id": "exp0020",
+      "mutation_kind": "crossover",
+      "parent1": "b26413d",
+      "parent2": "a2abd27",
+      "promoted_slot": "elite/3",
+      "status": "ok",
+      "val_bpb": "0.996065"
     }
   ],
-  "next_exp": 20,
+  "next_exp": 21,
   "operator_history": [
     "baseline",
     "mutate",
@@ -192,7 +201,8 @@
     "crossover",
     "mutate",
     "crossover",
-    "mutate"
+    "mutate",
+    "crossover"
   ],
   "pair_history": {
     "02c9a8c|5b99afd": 1,
@@ -202,7 +212,8 @@
     "5842c72|c57cda9": 1,
     "64f83ef|fcc3407": 1,
     "66ca8f1|fcc3407": 1,
-    "855fa48|de61b6b": 1
+    "855fa48|de61b6b": 1,
+    "a2abd27|b26413d": 1
   },
   "population_size": 4,
   "run_tag": "apr30-h100long-opus47-trace-selfmod-2"
